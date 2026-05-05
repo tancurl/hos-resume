@@ -1,0 +1,317 @@
+contacts:
+  name: Hossein Esmailzadeh
+  title: DevOps Engineer
+  email: hosteam01@gmail.com
+  address: "Tehran, Iran"
+  location: Iran
+  phone: "+98 920 382 3323"
+  links:
+  - name: LinkedIn
+    text: in/hossein-esmail
+    url: https://www.linkedin.com/in/hossein-esmail/
+  - name: Gitlab
+    text: primejade
+    url: https://gitlab.com/primejade/
+  - name: Github
+    text: "hossein-lap"
+    url: https://github.com/hossein-lap/
+  - name: Resume
+    text: hossein-lap.github.io
+    url: https://hossein-lap.github.io
+  - name: Blog
+    text: primejade.github.io
+    url: https://primejade.github.io
+
+position: DevOps Engineer
+
+tagline:
+  - Experienced Cloud DevOps Engineer with a strong background in Kubernetes, Docker, and AWS.
+  - Proficient in implementing CI/CD pipelines and GitOps methodologies for cloud infrastructure management.
+  - Skilled in Linux systems administration and troubleshooting.
+  - Committed to continuous learning and keeping up-to-date with emerging technologies.
+  - Proven track record of delivering high-quality solutions and collaborating effectively with cross‑functional teams.
+
+# jobs {{{
+jobs:
+  - position: DevOps Mentoring
+    company:
+      name: Devonix Team
+      link: '#'
+    product:
+      name: Weekly Meeting
+      link: '#'
+    description:
+      - The Linux Command Line (LPIC-1) - Basic Linux Knowledge
+      - Docker Deep Dive - Containers and Deeper Linux Concepts
+      - The Kubernetes Book - Container Orchestration
+      - GitHub Actions / GitLab CI - CI/CD runners and Pipeline
+      - Monitoring - Prometheus and Grafana
+      - Cloud - AWS / GCP
+    from: "Jun 2025"
+    to: "Jan 2026"
+    tags:
+      - ''
+    location: Remote
+  - position: DevOps Engineer
+    company:
+      name: Sina Communication Systems Co
+      link: '#'
+    product:
+      name: Full-time
+      link: '#'
+    description:
+      - Write and manage Jenkins pipelines
+      - Configuring agents and VMs for build and deploy
+      - Monitoring various micro-services
+      # - Manual HA system
+      - Basic system hardening
+    from: "Aug 2024"
+    to: "Present"
+    tags:
+      - ''
+    location: On-site
+  - position: NixOS System Administrator
+    company:
+      name: Self-employed
+      link: '#'
+    product:
+      name: Remote
+      link: '#'
+    description:
+      - Write and manage custom Nix package(s) and overlay(s)
+      - Boot-time (specialities) configuration and setup
+      - Create and manage isolated (test, deploy and development) environment
+    from: "Sep 2023"
+    to: "May 2025"
+    tags:
+      - ''
+    location: Remote
+  - position: DevOps Engineer
+    company:
+      name: Self-employed
+      link: '#'
+    product:
+      name: Hybrid
+      link: '#'
+    description:
+      - Deploying RESTful web-apps on docker-compose and Kubernetes
+      - Custom nginx load-balancer
+      - Redis cache storage
+      - Storage volumes
+    from: "Apr 2022"
+    to: "Jul 2024"
+    tags:
+      - ''
+    location: Remote
+  - position: DevOps Mentoring
+    company:
+      name: Devonix Team
+      link: '#'
+    product:
+      name: Weekly Meeting
+      link: '#'
+    description:
+      - LPIC-1 - Basic Linux Knowledge
+      - Docker Deep Dive - Containers and Deeper Linux Concepts
+      - Kubernetes in Action - Container Orchestration
+      - Pipeline as Code - CI/CD pipelines and Jenkins cookbook
+    from: "Sep 2021"
+    to: "Aug 2022"
+    tags:
+      - ''
+    location: Remote
+  - position: Automation and Virtualization Specialist
+    company:
+      name: RPS Cloud
+      link: '#'
+    product:
+      name: Remote
+      link: '#'
+    description:
+      - Manage Multi-Node (clustering) proxmox hypervisor
+      - Port-Forwarding using IPtables
+      - Automated shell script to use proxmox's API
+    from: "Jun 2022"
+    to: "Sep 2022"
+    tags:
+      - ''
+    location: Remote
+  - position: Linux System Administrator
+    company:
+      name: Self-employed
+      link: '#'
+    product:
+      name: Hybrid
+      link: '#'
+    description:
+      - Setup web-servers (e.g nginx, apache) on various Linux hosts
+      - Setup git and SMTP/IMAP servers
+      - Troubleshooting system and package maanger
+      - Write custom services
+    from: "Sep 2020"
+    to: "Sep 2024"
+    tags:
+      - ''
+    location: Remote
+# }}}
+
+# projects {{{
+projects:
+  - name: "Gerrit Manifest Tool"
+    text: gitlab.com/hos-tools/auto-manifest.git
+    url: https://gitlab.com/hos-tools/auto-manifest.git
+    description: 
+    - Add, Remove and Edit (projects, remotes, etc.) gerrit manifest file
+    - Simple Terminal User Interface (TUI)
+  - name: "Git bare-repo and worktree manager"
+    text: gitlab.com/hos-tools/git-worktree.git
+    url: https://gitlab.com/hos-tools/git-worktree.git
+    description: 
+    - Clone a git repository in bare
+    - Activate worktrees for each branch
+    - Run bulk-action on all worktree/branches
+    # - Move bare repositories safely on Filesystem
+  - name: "Simple QEMU wrapper"
+    text: gitlab.com/hos-tools/virtual-manager.git
+    url: https://gitlab.com/hos-tools/virtual-manager
+    description: 
+    - Wrapper around Type-2 QEMU hypervisor (with KVM acceleration enabled)
+    - Handle shared-folder
+    - Port-Forwarding
+    - VNC (headless) mode
+    - Save config in yaml format
+  - name: "Git GPG key handler"
+    text: gitlab.com/hos-tools/git-config.git
+    url: https://gitlab.com/hos-tools/git-config.git
+    description: 
+    - Manage GPG keys in a per-repo basis
+    - Optional commit message template and ssh-key settings
+    - Simple TUI
+  - name: "Resume Template"
+    text: gitlab.com/primejade/hos-resume.git
+    url: https://gitlab.com/primejade/hos-resume.git
+    description: 
+    - Automated CI/CD pipeline using Gitlab CI
+    - Pipeline triggers on new tags and not commits
+  - name: "RESTful web-app with Database and Cache"
+    text: github.com/hossein-lap/example-test-project-day-01.git
+    url: https://github.com/hossein-lap/example-test-project-day-01.git
+    description: 
+    - Simple RESTful web app written in golang
+    - Database (mysql) deployment with secret management in K8S cluster
+    - Redis cache with Autoscaler based on CPU usage and ConfigMap
+    - File-storage (persistent volume)
+# }}}
+
+# education {{{
+education:
+  - place:
+      name: Azad University
+      link: '#'
+    degree: "B.Sc."
+    major: Computer Science
+    track: Computer Science
+    from: "2020"
+    to: "2024"
+    location: ""
+# }}}
+
+# technical_expertise:
+#   - name: Kotlin
+#     level: 4
+#   - name: Angular
+#     level: 5
+#   - name: Ruby on Rails
+#     level: 5
+#   - name: Flutter
+#     level: 4
+#   - name: Go
+#     level: 4
+#   - name: Subversion
+#     level: 5
+
+# skills {{{
+skills:
+  - Automation
+  - Build System
+  - CI/CD
+  - Cloud
+  - Containerization
+  - DevOps
+  - GitOps
+  - IaC
+  - IaaS
+  - Load Balancer
+  - Microservices
+  - SaaS
+  - UNIX / Linux
+  - Virtualization
+# }}}
+
+# tools {{{
+tools:
+  - Ansible
+  - Awk
+  - Bash
+  - Docker
+  - Git
+  - Grafana
+  - HAProxy
+  - Helm
+  - Jenkins
+  - Kafka
+  - Kubernetes
+  - LVM
+  - Make
+  - Nginx
+  - Packer
+  - Prometheus
+  - Proxmox
+  - QEMU/KVM
+  - Terraform
+  - Traefik
+  - Vagrant
+
+  # - Tmux
+  # - Vim
+# }}}
+
+# programming {{{
+programming:
+  - C
+  - Go
+  - Groovy
+  - Lua
+  - Perl
+  - Python
+  - Ruby
+# }}}
+
+# languages {{{
+languages:
+  - English
+  # - German
+  # - Japanese
+  # - Russian
+# }}}
+
+# achivement {{{
+achievements:
+  - name: "LPIC 3"
+    description: "Virtualization and Containerization"
+  - name: "LPIC 3"
+    description: "Security"
+  - name: "LPIC 3"
+    description: "High Availability and Storage Cluster"
+  - name: "RedHat Certified Engineer"
+    description: ""
+  - name: "RedHat Certified System Administrator"
+    description: ""
+  - name: "SUSE Certified Administrator"
+    description: ""
+  - name: "LPIC 2"
+    description: ""
+  - name: "LPIC 1"
+    description: ""
+# }}}
+
