@@ -1,87 +1,386 @@
 #import "@preview/fontawesome:0.6.0": *
 
-// #let primary_colour = rgb("#295340")
-#let link_colour = rgb("#111111")
-#let primary_colour = rgb("#12348e")
-// #let primary_colour = rgb("#38bdf8")
+#let configuration = yaml("resume.yml")
+#let config = configuration.config
 
-#let icon(name, shift: 1.5pt) = {
+// variables {{{
+#let xbox_color_fg = config.color.box.fg
+#let xbox_color_bg = config.color.box.fg
+
+#let font_title = config.font.title
+#let font_body  = config.font.body
+#let font_mono  = config.font.mono
+// }}}
+
+// fontawesome icon {{{
+#let icon(name, shift: 1.5pt, solid: false) = {
+  h(3pt)
   box(
-    // baseline: shift,
-    // height: 1pt,
-    // image("icons/" + name + ".svg")
-    fa-icon(name, solid: false)
+    fa-icon(name, solid: solid)
   )
   h(3pt)
 }
+// }}}
 
-#let findMe(services) = {
-  set text(8pt)
-  let icon = icon.with(shift: 2.5pt)
-
-  services.map(service => {
-      icon(service.name)
-
-      if service.link == "" {
-        service.link = "#"
-      }
-      if "display" in service.keys() {
-        link(service.link)[#{service.display}]
-      } else {
-        link(service.link)
-      }
-    }).join(h(10pt))
-  [ ]
-}
-
-#let term(period, location) = {
-  text(7pt)[#icon("calendar") #period #h(1fr) #icon("location-dot") #location]
-}
-
+// cbox {{{
 #let cbox(name) = {
   box(
-    // inset: 1pt,
-    // outset: 1pt,
     outset: (x: 1pt, y: 1.5pt),
     inset: (x: 1pt, y: 1.0pt),
     clip: true,
     radius: 2pt,
-    stroke: 0.2pt + gradient.linear(rgb("#eee"), rgb("#ddd"), angle: 90deg),
-    fill: gradient.linear(rgb("#fff"), rgb("#ddd"), angle: 90deg),
+    stroke: 0.2pt + gradient.linear(rgb("#efefef"), rgb("#dddddd"), angle: 90deg),
+    fill: gradient.linear(rgb("#f7f7f7"), rgb("#ffffff"), angle: 90deg),
   )[
     #text(
-      // top-edge: 10pt,
-      // font: "Liberation Sans",
-      // weight: "medium",
       size: 8pt,
-      // baseline: 4pt,
       spacing: 2pt,
     )[
       #name
     ]
 
-    // #highlight(
-    //   radius: 1pt,
-    //   stroke: none,
-    //   fill: none,
-    //   // stroke: rgb("#eee"),
-    //   // fill: gradient.linear(rgb("#fff"), rgb("#ddd"), angle: 90deg),
-    //   extent: 2pt,
-    //   text(
-    //     // top-edge: 10pt,
-    //     // font: "Liberation Sans",
-    //     // weight: "medium",
-    //     size: 8pt,
-    //     // baseline: 4pt,
-    //     spacing: 2pt,
-    //     name
-    //   )
-    // )
   ]
-    h(2pt)
+  h(2pt)
+}
+// }}}
+
+// cage macro {{{
+#let cage(content) = {
+  box(
+    outset: (x: 1pt, y: 1.5pt),
+    inset: (x: 1pt, y: 1.0pt),
+    clip: true,
+    radius: 2pt,
+    stroke: 0.2pt + gradient.linear(rgb("#efefef"), rgb("#dddddd"), angle: 90deg),
+    fill: gradient.linear(rgb("#f7f7f7"), rgb("#ffffff"), angle: 90deg),
+    width: 100%,
+  )[
+    #text(
+      size: 7pt,
+      spacing: 2pt,
+    )[
+      #pad(
+        left: 5pt,
+        right: 5pt,
+        top: 5pt,
+        bottom: 5pt,
+      )[
+        #content
+      ]
+    ]
+  ]
+}
+// }}}
+
+// entry macro {{{
+// timeline
+#let timeline(body, last: false) = {
+  let radius = 1.0pt
+  let fill = rgb("#cccccc")
+  let stroke = if not last {
+    (
+      right: (
+        paint: fill,
+        thickness: radius / 2.5,
+        // dash: (
+        //   3pt, 3pt, "dot", 3pt
+        // ),
+        miter-limit: 1,
+        // cap: "round",
+        // join: "round",
+      ),
+    )
+  }
+  let circle = box(
+  )[
+    #circle(radius: radius, fill: fill)
+  ]
+  (
+    grid.cell(
+      colspan: 2,
+      align: center,
+      inset: (
+        y: 2pt,
+      ),
+    )[
+      #circle
+    ],
+    grid.cell(
+      rowspan: 2,
+      inset: (
+        bottom: 0.1em + 5pt,
+        left: -5pt,
+      ),
+    )[
+      #body
+    ],
+    grid.cell(
+      stroke: stroke,
+      inset: (
+        top:    9pt,
+        bottom: 9pt,
+        y: 9pt,
+        x: 9pt,
+      ),
+    )[],
+    none,
+  )
 }
 
+#let entry(
+  company: (),
+  product: (),
+  position: (),
+  extra,
+) = [
+  #cage[
+    #text(
+      weight: "bold",
+      size: 9pt,
+    )[
+      #if type(company) == "str" [
+        #company
+      ] else [
+        #if "link" in company [
+          #if company.link != "" [
+            #link(company.link, company.name)
+          ] else if "url" in company [
+            #link(company.url, company.name)
+          ]
+        ] else [
+          #if "name" in company [
+            #company.name
+          ]
+        ]
+      ]
+    ]
+    #h(1fr)
+    #text(
+      size: 7pt,
+    )[
+      #if "link" in product [
+        #if product.link != "" [
+          #link(product.link, product.name)
+        ] else if "url" in product [
+          #link(product.url, product.name)
+        ]
+      ] else [
+        #if "name" in product [
+          #product.name
+        ] else if "text" in product [
+          #product.text
+        ]
+      ]
+    ]
+    #v(-3pt)
+    #let count = position.len()
+    #if count == 1 [
+      #let pos = position.at(0)
+      #text(
+        size: 8pt,
+      )[
+        #pos.name
+      ]
+      #h(1fr)
+      #if pos.location == product.name [
+        #pos.location
+        #icon("location-dot")
+      ] else [
+        #pos.location
+        #icon("location-dot") \
+        #if pos.from != "" [
+          #if pos.to == "Present" [
+            #icon("calendar")
+          ] else [
+            #icon("calendar-check")
+          ]
+          #text(
+            size: 6pt,
+            font: font_mono,
+          )[
+            #pos.from --- #pos.to
+          ]
+        ]
+      ]
+      #pad(
+        left:   4pt,
+        right:  4pt,
+      )[
+        #for desc in pos.description [
+          - #desc
+        ]
+      ]
+    ] else [
+      #pad(
+        left:   -6pt,
+        bottom: -6pt,
+      )[
+        #grid(
+          columns: (1.25em, 1.25em, 1fr),
+          column-gutter: (0pt, 0.3em),
+          ..position.enumerate().map(((idx, pos)) => {
+            let last = idx == count - 1
+            let body = [
+              #if "name" in pos [
+                #text(
+                  size: 8pt,
+                )[
+                  #pos.name
+                ]
+              ]
+              #h(1fr)
+              #if "location" in pos [
+                #if pos.location == product.name [
+                  #pos.location
+                  #icon("location-dot")
+                ] else [
+                  #pos.location
+                  #icon("location-dot") \
+                  #if pos.to == "Present" [
+                    #icon("calendar")
+                  ] else [
+                    #icon("calendar-check")
+                  ]
+                  #text(
+                    size: 6pt,
+                    font: font_mono,
+                  )[
+                    #pos.from --- #pos.to
+                  ]
+                ]
+              ]
+              #pad(
+                left:   4pt,
+                right:  4pt,
+              )[
+                #if "description" in pos [
+                  #for desc in pos.description [
+                    - #desc
+                  ]
+                ]
+              ]
+              #v(4pt)
+            ]
 
+            timeline(body, last: last)
+
+          }).flatten()
+        )
+      ]
+    ]
+    #extra
+  ]
+]
+
+#let education-entry(edu) = [
+  #cage[
+    #text(
+      weight: "bold",
+      size: 9pt,
+    )[
+      #if edu.place.link != "" [
+        #link(edu.place.link, edu.place.name)
+      ] else [
+        #edu.place.name
+      ]
+    ]
+    #h(1fr)
+    #text(size: 7pt)[
+      #if edu.track != "" [
+        #text(size: 8pt)[
+          #edu.track
+        ]
+      ]
+    ]
+    #v(-3pt)
+    #pad(
+      left: 4pt,
+      right: 4pt,
+    )[
+      #if edu.location != "" [
+          // #icon("location-dot")
+          #edu.location
+          ---
+        ]
+        #edu.degree
+        #if edu.major != "" [
+          #edu.major
+        ]
+        #h(1fr)
+        #text(
+          size: 6pt,
+          font: font_mono,
+        )[
+          #edu.from --- #edu.to
+        ]
+      // ] else [
+      // ]
+    ]
+
+    // #pad(
+    //   left: 4pt,
+    //   right: 4pt,
+    // )[
+    //   #edu.degree
+    //   #if edu.major != "" [
+    //     #edu.major
+    //   ]
+    //   #h(1fr)
+    //   #text(
+    //     size: 6pt,
+    //     font: font_mono,
+    //   )[
+    //     #edu.from --- #edu.to
+    //   ]
+    // ]
+
+  ]
+]
+
+// }}}
+
+// contact macro {{{
+#let display-contact(item) = [
+  #let content_font_size = 7pt
+  #grid(
+    columns: (1fr, 10fr),
+    column-gutter: 2pt,
+    [
+      #box(
+        outset: (x: 0pt, y: 1.0pt),
+        inset: (x: 0pt, y: 0.0pt),
+      )[
+        #text(size: content_font_size + 1.0pt)[
+          #icon(item.icon)
+        ]
+      ]
+    ],
+    [
+      #let txt = text(
+        size: content_font_size,
+        font: font_mono,
+        weight: "bold",
+      )[
+        #item.text
+      ]
+      #box(
+        outset: (x: 0pt, y: 0.0pt),
+        inset: (x: 0pt, y: 1.3pt),
+      )[
+        #if "link" in item {
+          link(item.link, txt)
+        } else {
+          txt
+        }
+      ]
+    ]
+  )
+  #v(-4pt)
+]
+// }}}
+
+
+// progress bar skill set {{{
 #let max_rating = 50
 #let skill(name, rating) = {
 
@@ -94,11 +393,10 @@
     let radiusValue = (left: 0em, right: 0em)
 
     if (i <= rating){
-      colour = primary_colour
-      strokeColor = primary_colour
+      colour = primary-colour
+      strokeColor = primary-colour
     }
 
-    // Add rounded corners for the first and last boxes
     if (i == 1) {
       radiusValue = (left: 2em, right: 0em)  
     } else if (i == max_rating) {
@@ -123,16 +421,14 @@
   [\ ]
 
 }
+// }}}
 
-
-#let styled-link(dest, content) = text(
-    fill: link_colour,
-    link(dest, content)
-  )
-
+// main macro {{{
 #let vantage(
   name: "",
   position: "",
+  picture: (),
+  color: (),
   links: (),
   tagline: [],
   leftSide,
@@ -144,64 +440,81 @@
     title: name + "'s CV",
     author: name,
   )
-  set text(9.8pt, font: "Source Sans Pro")
+  set text(9.8pt, font: font_body)
   set page(
     margin: (x: 1.2cm, y: 1.2cm),
   )
 
-  show heading.where(level: 1) : it => text(font: "Liberation Sans", size: 16pt,[#{it.body} #v(10pt)])
+  show heading.where(level: 1) : it => text(font: font_title, size: 16pt,[#{it.body} #v(10pt)])
 
   show heading.where(
     level: 2,
   ): it => text(
-      font: "Liberation Sans",
-      fill: primary_colour,
+    font: font_title,
+    fill: rgb(color.accent),
     [
       #{it.body}
       #v(-7pt)
-      #line(length: 100%, stroke: 0.5pt + primary_colour)
+      #line(length: 100%, stroke: 0.5pt + rgb(color.accent))
     ]
   )
 
   show heading.where(
     level: 3
   ): it => text(
-    font: "Liberation Sans",
+    font: font_title,
     it.body
   )
-  
+
   show heading.where(
     level: 4
   ): it => text(
-    font: "Liberation Sans",
-    fill: primary_colour,
+    font: font_title,
+    fill: primary-colour,
     it.body
   )
 
-  text(font: "Liberation Sans", size: 18pt, weight: "bold", name)
-  v(-5pt)
-  text(font: "Liberation Sans", size: 15pt, weight: "medium",[#position])
-  v(2pt)
-  findMe(links)
-  v(0pt)
-  // pad(
-  //   left: 10pt,
-  //   right: 10pt,
-  //   text(size: 9pt, tagline)
-  // )
-  v(-5pt)
-  pad(
-    left: 10pt,
-    right: 10pt,
-    text(
-      size: 9pt,
-      // join all tagline items with a separator
-      tagline.map(t => t).join(" ")
+  if picture.enable == true [
+    #grid(
+      columns: (11fr, 3fr),
+      column-gutter: 3em,
+      [
+        #text(font: font_title, size: 18pt, weight: "bold")[
+          #name
+        ]
+        #h(1fr)
+        #text(font: font_title, size: 15pt, weight: "medium")[
+          #position
+        ]
+        #v(2pt)
+        #v(5pt)
+        #pad(
+          left: 5pt,
+          right: 5pt,
+        )[
+          #tagline.map(t => t).join(" ")
+        ]
+      ],
+      [
+        #image(picture.path)
+      ]
     )
-  )
-
-
-  v(4pt)
+  ] else [
+    #text(font: font_title, size: 18pt, weight: "bold", name)
+    #v(-5pt)
+    #text(font: font_title, size: 15pt, weight: "medium",[#position])
+    #v(-3pt)
+    #pad(
+      left: 5pt,
+      right: 5pt,
+    )[
+      #text(
+        size: 9pt,
+        tagline.map(t => t).join(" ")
+      )
+    ]
+    #v(4pt)
+  ]
 
   grid(
     columns: (7fr, 4fr),
@@ -211,18 +524,10 @@
   )
   v(2pt)
 
-  // grid(
-  //   columns: 1,
-  //   column-gutter: 1em,
-  //   nextside,
-  // )
-
   breakSide
   v(2pt)
-  pad(
-    left: 10pt,
-    right: 10pt,
-    nextSide
-  )
+  nextSide
 
 }
+// }}}
+

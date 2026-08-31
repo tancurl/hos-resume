@@ -1,163 +1,277 @@
-#import "vantage.typ": vantage, term, skill, cbox, styled-link
+#import "vantage.typ": vantage, cbox, icon, entry, display-contact, cage, education-entry
+        // arrange the first 4 item in a 2x2 grid
+
 #let configuration = yaml("resume.yml")
+#let config = configuration.config
 #let contacts = configuration.contacts
+
+#let separator(x: -2pt, y: 3pt) = box(
+  outset: (x: x, y: y),
+  inset:  (x: x, y: y),
+)[
+  #text(size: 2pt)[#icon("circle")]
+]
 
 #vantage(
   name: configuration.contacts.name,
   position: configuration.position,
-  links: (
-    // (name: "location-dot", link: "", display: contacts.address),
-    // (name: "globe", link: contacts.links.at(4).url, display: contacts.links.at(4).text), // Blog
-    // (name: "envelope", link: "mailto:" + contacts.email),
-    // (name: "mobile-screen", link: "", display: contacts.phone),
-    // (name: "github", link: contacts.links.at(2).url, display: contacts.links.at(2).text), // Github
-    // (name: "gitlab", link: contacts.links.at(1).url, display: contacts.links.at(1).text), // Gitlab
-    // (name: "linkedin", link: contacts.links.at(0).url, display: contacts.links.at(0).text) // LinkedIn
-  ),
+  picture: config.picture,
+  color: (config.color),
   tagline: (configuration.tagline),
   [
-    == Experience
+    == Experiences
     #pad(
       left: 4pt,
       right: 4pt,
-      for job in configuration.jobs [
+    )[
 
-        === #job.position \
-        #if job.company.link == "" {
-          text(size: 8pt)[
-            #job.company.name - #styled-link(job.product.link)[
-              #text(size: 7pt, job.product.name)
-            ]
-          ]
-        } else {
-          link(job.company.link)[
-            #text(size: 8pt, job.company.name) - #styled-link(job.product.link)[
-              #text(size: 7pt, job.product.name)
-            ]
-          ]
-        } \
-        #term[#job.from --- #job.to][#job.location]
+      #for (j, job) in configuration.jobs.enumerate() [
 
-        #for point in job.description [
-          #text(size: 8pt, list.item(point))
-        ]
-        #v(6pt)
+        #let company = job.company
+        #let product = job.product
+        #let position = job.position
+
+        #entry(
+          company: job.company,
+          product: job.product,
+          position: job.position,
+        )[]
+
+
       ]
-    )
-    #v(5pt)
-    
+    ]
   ],
   [
-    // == Objective
-    //
-    // #configuration.objective
 
-    // == Technical Expertise
-    //
-    // #for item in configuration.technical_expertise [
-    //   #skill(item.name, item.level)
-    // ]
+    == Contact Info
+
+    #pad(
+      left: 6pt,
+      right: 6pt,
+    )[
+
+
+        #contacts.info.map(item => cbox[
+          #let txt = text(
+            size: 7pt,
+            font: config.font.mono,
+            weight: "bold",
+          )[
+            #item.text
+          ]
+          #icon(item.icon)
+          #if "link" in item [
+            #if item.link != "" [
+              #link(item.link, txt)
+            ]
+          ] else [
+            #txt
+          ]
+          #v(1pt)
+        ]).join(
+          [  ]
+        )
+
+
+      ]
+    #v(4pt)
 
     == Skills
+
     #pad(
       left: 4pt,
       right: 4pt,
-      for item in configuration.skills [
-        #cbox(item)
-      ]
-    )
-    #v(8pt)
-
-    == Skills
-    #pad(
-      left: 4pt,
-      right: 4pt,
-      for item in configuration.skills [
-        #cbox(item)
-      ]
-    )
-    #v(8pt)
+    )[
+      #configuration.skills.map(item => cbox(item)).join(
+        [ #h(-2pt) #text(fill: rgb(config.color.separator))[#separator()] #h(0pt) ]
+      )
+      #v(4pt)
+    ]
 
     == Tools
+
     #pad(
       left: 4pt,
       right: 4pt,
-      for item in configuration.tools [
-        #cbox(item)
-      ]
-    )
-    #v(8pt)
+    )[
+      #configuration.tools.map(item => cbox(item)).join(
+        [ #h(-2pt) #text(fill: rgb(config.color.separator))[#separator()] #h(0pt) ]
+      )
+      #v(4pt)
+    ]
 
     == Programming
+
     #pad(
       left: 4pt,
       right: 4pt,
-      for item in configuration.programming [
-        #cbox(item)
-      ]
-    )
-    #v(8pt)
+    )[
+      #configuration.programming.map(item => cbox(item)).join(
+        [ #h(-2pt) #text(fill: rgb(config.color.separator))[#separator()] #h(0pt) ]
+      )
+      #v(4pt)
+    ]
 
     == Languages
+
     #pad(
       left: 4pt,
       right: 4pt,
-      for item in configuration.languages [
-        #cbox(item)
-        // #text(size: 9pt, list.item(item))
-      ]
-    )
-    #v(8pt)
+    )[
+      #configuration.languages.map(item => cbox(item)).join(
+        [ #h(-2pt) #text(fill: rgb(config.color.separator))[#separator()] #h(0pt) ]
+      )
+      #v(4pt)
+    ]
 
-    == Certifications
+    == Studies
     #pad(
       left: 4pt,
       right: 4pt,
-      for achievement in configuration.achievements [
-        === #text(size: 9pt, achievement.name)
-        #h(2fr)
-        #text(size: 8pt, achievement.description)
-
-      ]
-    )
-    #v(8pt)
+    )[
+        #for studies in configuration.studies [
+          #cbox[
+            #text(weight: "bold", size: 8pt)[
+              #studies.name
+            ]
+            #if studies.description != "" [
+              ---
+              #text(size: 7pt)[
+                #studies.description
+              ]
+            ]
+          ]
+          #v(-4pt)
+        ]
+        #v(4pt)
+    ]
+    #v(4pt)
 
     == Education
 
     #pad(
       left: 4pt,
       right: 4pt,
-      for edu in configuration.education [
-        // === #if edu.place.link != "" [
-        //   #link(edu.place.link)[#edu.place.name]\
-        // ] else [
-        //   #edu.place.name\
-        // ]
-        // #edu.from - #edu.to #h(1fr) #edu.location
-        // #edu.degree in #edu.major
-
-        === #edu.degree in #edu.major
-
-        #edu.from - #edu.to #h(1fr) #edu.location #edu.place.name
-
+    )[
+      #for edu in configuration.education [
+        #education-entry(edu)
       ]
-    )
-
-  ],
-  [
-    == Projects
-  ],
-  [
-    #for item in configuration.projects [
-      === #item.name
-      #h(2fr)
-      #link(item.url, text(size: 9pt, item.text))
-
-      #for point in item.description [
-        // #text(size: 9pt, pad(left: 10pt, right: 10pt, point))
-        #pad(left: 10pt, right: 10pt, text(size: 9pt, list.item(point)))
-      ]
-      #v(10pt)
     ]
+
+    == Interests
+
+    #pad(
+      left: 4pt,
+      right: 4pt,
+    )[
+      #configuration.interests.map(item => cbox(item)).join(
+        [ #h(-2pt) #text(fill: rgb(config.color.separator))[#separator()] #h(0pt) ]
+      )
+      #v(4pt)
+    ]
+
+  ],
+  [
+    #pagebreak()
+
+    == Achievements
+
+    #pad(
+      left: 4pt,
+      right: 4pt,
+    )[
+
+      #let first2 = configuration.achievements.slice(0, calc.min(2, configuration.achievements.len()))
+      #let rest   = configuration.achievements.slice(calc.min(2, configuration.achievements.len()))
+
+      #columns(2, gutter: 8pt)[
+        #for (i, achievement) in first2.enumerate() [
+          #entry(
+          company:    achievement,
+          )[
+            #v(-1pt)
+            #pad(
+              left: 5pt, right: 5pt,
+            )[
+              #text(size: 8pt, list.item(achievement.description))
+            ]
+            #v(-1pt)
+          ]
+          #if i == 0 [
+            #colbreak()
+          ]
+        ]
+      ]
+
+      #for achievement in rest [
+        #entry(
+          company:    achievement,
+        )[
+          #v(-1pt)
+          #pad(
+            left: 5pt, right: 5pt,
+          )[
+            #text(size: 8pt, list.item(achievement.description))
+          ]
+          #v(-1pt)
+        ]
+      ]
+
+    ]
+  ],
+  [
+
+    == Projects
+
+    #columns(1, gutter: 8pt)[
+
+      #pad(
+        left: 10pt,
+        right: 10pt,
+      )[
+
+        #let first4 = configuration.projects.slice(0, calc.min(2, configuration.projects.len()))
+        #let rest   = configuration.projects.slice(calc.min(2, configuration.projects.len()))
+
+        #columns(2, gutter: 8pt)[
+          #for (i, project) in first4.enumerate() [
+            #entry(
+              company:    project,
+            )[
+              #for point in project.description [
+                #v(-1pt)
+                #pad(
+                  left: 5pt, right: 5pt,
+                )[
+                  #text(size: 8pt, list.item(point))
+                ]
+                #v(-1pt)
+              ]
+            ]
+            #if i == 0 [
+              #colbreak()
+            ]
+          ]
+        ]
+
+        #for project in rest [
+          #entry(
+            company: project,
+          )[
+            #for point in project.description [
+              #v(-1pt)
+              #pad(
+                left: 5pt, right: 5pt,
+              )[
+                #text(size: 8pt, list.item(point))
+              ]
+              #v(-1pt)
+            ]
+          ]
+        ]
+
+      ]
+    ]
+
   ]
 )
