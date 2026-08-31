@@ -1,5 +1,17 @@
 = Resume Template
 
+== Requirements
+
+* link:https://github.com/typst/typst[typst]
+* `make`
+
+== Usage Notes
+
+* You need to update the `resume.yml` file based on your needs
+* You need to update the `NAME` variable in `Makefile`
+
+== TODO
+
 * [x] PDF
 * [x] HTML
 
