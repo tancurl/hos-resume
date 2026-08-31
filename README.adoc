@@ -10,6 +10,10 @@
 * You need to update the `resume.yml` file based on your needs
 * You need to update the `NAME` variable in `Makefile`
 
+== Review
+
+* xref:resume.pdf[View PDF]
+
 == TODO
 
 * [x] PDF
