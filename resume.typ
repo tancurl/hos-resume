@@ -9,7 +9,7 @@
   outset: (x: x, y: y),
   inset:  (x: x, y: y),
 )[
-  #text(size: 2pt)[#icon("circle")]
+  #text(size: 2pt)[#icon(solid: false, "minus")]
 ]
 
 #vantage(
