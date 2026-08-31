@@ -10,6 +10,11 @@
 * You need to update the `resume.yml` file based on your needs
 * You need to update the `NAME` variable in `Makefile`
 
+== Build
+
+Test:: `make`
+Prod:: `make prod`
+
 == Review
 
 * xref:resume.pdf[View PDF]
